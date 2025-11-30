@@ -4,171 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>大埔宏福苑五級火．永遠懷念</title>
+
+  <!-- Firebase 10.x 官方 CDN（最新穩定版） -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-database-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.2.0/dist/signature_pad.umd.min.js"></script>
+
   <style>
     *{box-sizing:border-box;margin:0;padding:0;}
-    body{
-      background:linear-gradient(to bottom,#0b0b1e,#16213e);
-      color:#f0f0f0;
-      font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;
-      line-height:1.6;
-      min-height:100vh;
-    }
+    body{background:linear-gradient(to bottom,#0b0b1e,#16213e);color:#f0f0f0;font-family:"Noto Sans TC",sans-serif;line-height:1.6;min-height:100vh;}
 
-    /* ===== 標題區 + 超大超清晰的流動簽名帶 ===== */
-    .header{
-      text-align:center;
-      padding:40px 20px 0;
-      background:rgba(0,0,0,0.65);
-      backdrop-filter:blur(10px);
-    }
-    h1{
-      font-size:2.8rem;
-      color:#ffffff;
-      margin:0 0 12px;
-      text-shadow:0 2px 10px rgba(0,0,0,0.8);
-    }
-    .counter{
-      font-size:2rem;
-      color:#ffdd00;
-      font-weight:bold;
-      margin:15px 0;
-    }
+    .header{text-align:center;padding:40px 20px 0;background:rgba(0,0,0,0.65);backdrop-filter:blur(10px);}
+    h1{font-size:2.8rem;color:#fff;margin:0 0 12px;text-shadow:0 2px 10px #000;}
+    .counter{font-size:2rem;color:#ffdd00;font-weight:bold;margin:15px 0;}
 
-    /* 流動簽名帶（重點放大＋高對比） */
-    .marquee-wrapper{
-      background:rgba(10,15,40,0.9);
-      padding:20px 0;
-      margin-top:20px;
-      border-top:2px solid #ffdd00;
-      border-bottom:2px solid #ffdd00;
-    }
-    .marquee{
-      white-space:nowrap;
-      font-size:2.1rem;           /* 超大字 */
-      font-weight:600;
-      color:#ffff99;
-      text-shadow:
-        0 0 10px #ffdd00,
-        0 0 20px #ffaa00,
-        2px 2px 4px #000;
-      animation:scroll 80s linear infinite;
-    }
+    .marquee-wrapper{background:rgba(10,15,40,0.9);padding:20px 0;margin-top:20px;border-top:2px solid #ffdd00;border-bottom:2px solid #ffdd00;}
+    .marquee{white-space:nowrap;font-size:2.1rem;font-weight:600;color:#ffff99;
+      text-shadow:0 0 10px #ffdd00,0 0 20px #ffaa00,2px 2px 4px #000;
+      animation:scroll 80s linear infinite;}
     .marquee:hover{animation-play-state:paused;}
-    @keyframes scroll{
-      0%{transform:translateX(100%);}
-      100%{transform:translateX(-100%);}
-    }
-    .sig-item{
-      display:inline-block;
-      margin:0 80px;
-      vertical-align:middle;
-    }
-    .sig-img{
-      height:56px;
-      margin-right:16px;
-      vertical-align:middle;
-      filter:drop-shadow(0 0 8px #ffdd00);
-    }
+    @keyframes scroll{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
+    .sig-item{display:inline-block;margin:0 80px;vertical-align:middle;}
+    .sig-img{height:56px;margin-right:16px;vertical-align:middle;filter:drop-shadow(0 0 8px #ffdd00);}
 
-    /* 主要內容 */
-    .content{
-      padding:40px 20px;
-      max-width:700px;
-      margin:0 auto;
-    }
-    .prayer{
-      background:rgba(255,255,255,0.08);
-      padding:30px;
-      border-radius:18px;
-      font-size:1.5rem;
-      text-align:center;
-      margin-bottom:40px;
-      backdrop-filter:blur(10px);
-      border:1px solid rgba(255,215,0,0.3);
-    }
-
-    /* 簽名表單（加大所有元素） */
-    .sign-form{
-      background:rgba(255,255,255,0.12);
-      padding:35px;
-      border-radius:20px;
-      backdrop-filter:blur(12px);
-      border:2px solid #ffdd00;
-    }
-    .sign-form h2{
-      font-size:2.2rem;
-      color:#ffdd00;
-      text-align:center;
-      margin-bottom:25px;
-    }
-    input, textarea{
-      width:100%;
-      padding:18px;
-      margin:15px 0;
-      border:none;
-      border-radius:12px;
-      background:rgba(255,255,255,0.2);
-      color:#fff;
-      font-size:1.4rem;
-    }
-    input::placeholder, textarea::placeholder{color:#ddd;}
-    #signature-canvas{
-      width:100%;
-      height:220px;
-      background:#fff;
-      border:4px solid #ffdd00;
-      border-radius:14px;
-      margin:20px 0;
-      touch-action:none;
-    }
+    .content{padding:40px 20px;max-width:700px;margin:0 auto;}
+    .prayer{background:rgba(255,255,255,0.08);padding:30px;border-radius:18px;font-size:1.5rem;text-align:center;margin-bottom:40px;backdrop-filter:blur(10px);border:1px solid rgba(255,215,0,0.3);}
+    .sign-form{background:rgba(255,255,255,0.12);padding:35px;border-radius:20px;backdrop-filter:blur(12px);border:2px solid #ffdd00;}
+    .sign-form h2{font-size:2.2rem;color:#ffdd00;text-align:center;margin-bottom:25px;}
+    input,textarea{width:100%;padding:18px;margin:15px 0;border:none;border-radius:12px;background:rgba(255,255,255,0.2);color:#fff;font-size:1.4rem;}
+    input::placeholder,textarea::placeholder{color:#ddd;}
+    #signature-canvas{width:100%;height:220px;background:#fff;border:4px solid #ffdd00;border-radius:14px;margin:20px 0;}
     .btn-group{text-align:center;margin:20px 0;}
-    button{
-      font-size:1.5rem;
-      padding:16px 36px;
-      border:none;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:bold;
-    }
+    button{font-size:1.5rem;padding:16px 36px;border:none;border-radius:12px;cursor:pointer;font-weight:bold;}
     .submit-btn{background:#ffdd00;color:#000;}
     .clear-btn{background:#555;color:#fff;margin-left:15px;}
     button:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.4);}
+    footer{text-align:center;padding:50px 20px;font-size:1.3rem;color:#aaa;}
 
-    footer{
-      text-align:center;
-      padding:50px 20px;
-      font-size:1.3rem;
-      color:#aaa;
-    }
-
-    /* 感謝彈窗 */
-    .popup{
-      position:fixed;top:0;left:0;width:100%;height:100%;
-      background:rgba(0,0,0,0.97);display:none;
-      justify-content:center;align-items:center;z-index:999;
-    }
-    .popup-content{
-      background:#16213e;padding:50px;border-radius:20px;
-      text-align:center;max-width:90%;border:4px solid #ffdd00;
-    }
+    .popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.97);display:none;justify-content:center;align-items:center;z-index:999;}
+    .popup-content{background:#16213e;padding:50px;border-radius:20px;text-align:center;max-width:90%;border:4px solid #ffdd00;}
     .popup-content h2{font-size:3rem;color:#ffdd00;margin-bottom:20px;}
     .popup-content p{font-size:1.8rem;line-height:1.8;}
-    .popup-content button{
-      margin-top:30px;padding:16px 40px;font-size:1.6rem;
-    }
 
-    /* 手機優化 */
     @media (max-width:768px){
-      h1{font-size:2.3rem;}
-      .counter{font-size:1.7rem;}
-      .marquee{font-size:1.7rem;}
-      .sig-item{margin:0 45px;}
-      .sig-img{height:44px;}
-      .prayer{font-size:1.35rem;}
-      .sign-form h2{font-size:1.9rem;}
-      input,textarea,button{font-size:1.3rem;}
-      #signature-canvas{height:200px;}
+      h1{font-size:2.3rem;}.counter{font-size:1.7rem;}.marquee{font-size:1.7rem;}
+      .sig-item{margin:0 45px;}.sig-img{height:44px;}.prayer{font-size:1.35rem;}
+      .sign-form h2{font-size:1.9rem;}#signature-canvas{height:200px;}
     }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -178,10 +59,7 @@
   <div class="header">
     <h1>大埔宏福苑五級火<br>永遠懷念逝去的生命</h1>
     <div class="counter">已有 <span id="count">0</span> 位市民簽名悼念</div>
-    
-    <div class="marquee-wrapper">
-      <div class="marquee" id="marquee">載入中⋯</div>
-    </div>
+    <div class="marquee-wrapper"><div class="marquee" id="marquee">載入中⋯</div></div>
   </div>
 
   <div class="content">
@@ -195,13 +73,9 @@
       <h2>留下你的悼念</h2>
       <input type="text" id="name" placeholder="你的姓名（可留空匿名）" maxlength="20">
       <canvas id="signature-canvas"></canvas>
-      <div class="btn-group">
-        <button class="clear-btn" onclick="signaturePad.clear()">清除簽名</button>
-      </div>
+      <div class="btn-group"><button class="clear-btn" onclick="signaturePad.clear()">清除簽名</button></div>
       <textarea id="message" rows="4" placeholder="你的祝福或悼念訊息（可留空）" maxlength="120"></textarea>
-      <div class="btn-group">
-        <button class="submit-btn" onclick="addSignature()">提交悼念</button>
-      </div>
+      <div class="btn-group"><button class="submit-btn" onclick="addSignature()">提交悼念</button></div>
     </div>
 
     <footer>
@@ -221,71 +95,60 @@
   </div>
 
   <script>
+    // === 您自己的 Firebase Config（已填好）===
+    const firebaseConfig = {
+      apiKey: "AIzaSyDyaNGHsEDVXuAh8IPx1x984d7Zw7hzFu0",
+      authDomain: "hongfuyuen-mourning.firebaseapp.com",
+      databaseURL: "https://hongfuyuen-mourning-default-rtdb.firebaseio.com",
+      projectId: "hongfuyuen-mourning",
+      storageBucket: "hongfuyuen-mourning.firebasestorage.app",
+      messagingSenderId: "112015859916",
+      appId: "1:112015859916:web:d251395ffbe645a390a269"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database().ref('signatures');
+
     // 手寫簽名
     const canvas = document.getElementById('signature-canvas');
     const signaturePad = new SignaturePad(canvas, {penColor:'black'});
-    function resize(){ 
-      const ratio = Math.max(window.devicePixelRatio || 1, 1);
-      canvas.width = canvas.offsetWidth * ratio;
-      canvas.height = canvas.offsetHeight * ratio;
-      canvas.getContext('2d').scale(ratio, ratio);
-      signaturePad.clear();
-    }
-    window.onresize = resize; resize();
+    function resize(){const r=Math.max(window.devicePixelRatio||1,1);canvas.width=canvas.offsetWidth*r;canvas.height=canvas.offsetHeight*r;canvas.getContext('2d').scale(r,r);signaturePad.clear();}
+    window.onresize=resize; resize();
 
-    const BIN_ID = '692c1e26d0ea881f40094bc3';
-    let signatures = [];
-
-    async function load(){
-      try{
-        const r = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
-        const d = await r.json();
-        signatures = d.record || [];
-      }catch(e){}
-      update();
-    }
-    async function save(){
-      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`,{
-        method:'PUT',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({record:signatures})
-      });
-    }
-    function update(){
+    // 即時監聽（最強！其他人提交時你這邊秒更新）
+    db.on('value', snapshot => {
+      const data = snapshot.val();
+      const signatures = data ? Object.keys(data).map(k => data[k]) : [];
       document.getElementById('count').textContent = signatures.length;
-      if(signatures.length===0){
+      if (signatures.length === 0) {
         document.getElementById('marquee').innerHTML = '<span class="sig-item">目前尚未有簽名　你是第一位留下悼念的人嗎？</span>';
         return;
       }
-      const one = signatures.slice().reverse().map(s=>`
+      const html = signatures.reverse().map(s=>`
         <span class="sig-item">
           ${s.signature?`<img src="${s.signature}" class="sig-img" alt="簽名">`:''}
           <strong>${e(s.name)}</strong>${s.message?`：${e(s.message)}`:''}
           <small style="margin-left:10px;opacity:0.8;">${s.date}</small>
         </span>
       `).join('');
-      document.getElementById('marquee').innerHTML = one + one;
-    }
+      document.getElementById('marquee').innerHTML = html + html;
+    });
+
     function e(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-    async function addSignature(){
-      if(signaturePad.isEmpty()){alert('請先手寫簽名');return;}
+    window.addSignature = function() {
+      if (signaturePad.isEmpty()) {alert('請先手寫簽名');return;}
       const name = document.getElementById('name').value.trim()||'匿名市民';
       const signature = signaturePad.toDataURL();
       const message = document.getElementById('message').value.trim();
       const date = new Date().toLocaleDateString('zh-HK')+' '+new Date().toTimeString().slice(0,5);
 
-      signatures.push({name,signature,message,date});
-      await save();
-      update();
-
+      db.push({name, signature, message, date});
+      
       document.getElementById('name').value='';
       document.getElementById('message').value='';
       signaturePad.clear();
       document.getElementById('popup').style.display='flex';
-    }
-
-    load();
-    setInterval(load, 25000);
+    };
   </script>
 </body>
 </html>
